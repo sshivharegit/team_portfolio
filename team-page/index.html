@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Interactive search and filter */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            font-size: 1rem;
+            width: 300px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .search-box:focus {
+            outline: none;
+            background: white;
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: slideInDown 1s ease;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: slideInUp 1s ease 0.2s both;
+        }
+
+        /* Team statistics */
+        .team-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            min-width: 120px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .team-card:hover::before {
+            left: 100%;
+        }
+
+        .team-card:hover {
+            transform: translateY(-15px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+        }
+
+        .team-card.flip {
+            transform: rotateY(180deg);
+        }
+
+        .card-content {
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover .card-content {
+            transform: scale(1.05);
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .avatar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .team-card:hover .avatar::after {
+            opacity: 1;
+            animation: shimmer 1s ease;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover .avatar img {
+            transform: scale(1.1);
+        }
+
+        .team-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover h3 {
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .team-card .title {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .team-card .level {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover .level {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Quick info tooltip */
+        .quick-info {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .team-card:hover .quick-info {
+            opacity: 1;
+            bottom: -30px;
+        }
+
+        /* Floating action buttons */
+        .floating-actions {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .fab {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(180deg);
+        }
+
+        /* Dark theme */
+        body.dark-theme {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        body.dark-theme .team-card {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-theme .team-card h3 {
+            color: white;
+        }
+
+        body.dark-theme .team-card:hover h3 {
+            color: #667eea;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            background: white;
+            color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .detail-page {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+            animation: slideInUp 0.5s ease;
+        }
+
+        body.dark-theme .detail-page {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 2rem;
+        }
+
+        .detail-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            font-weight: bold;
+            overflow: hidden;
+            border: 5px solid white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .detail-avatar:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .detail-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .detail-info h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-theme .detail-info h2 {
+            color: white;
+        }
+
+        .detail-info .role {
+            font-size: 1.3rem;
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+        }
+
+        .detail-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .info-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        body.dark-theme .info-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #667eea;
+        }
+
+        .info-section h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        body.dark-theme .info-section h3 {
+            color: white;
+        }
+
+        .info-section ul {
+            list-style: none;
+        }
+
+        .info-section li {
+            padding: 0.5rem 0;
+            color: #555;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .info-section li:hover {
+            color: #667eea;
+            padding-left: 10px;
+        }
+
+        body.dark-theme .info-section li {
+            color: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-section li:last-child {
+            border-bottom: none;
+        }
+
+        .projects-section {
+            grid-column: 1 / -1;
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 1rem;
+        }
+
+        body.dark-theme .projects-section {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .project-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        body.dark-theme .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .project-card h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-theme .project-card h4 {
+            color: white;
+        }
+
+        /* Animations */
+        @keyframes slideInDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Modal for expanded project view */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            animation: slideInUp 0.3s ease;
+        }
+
+        body.dark-theme .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #667eea;
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 768px) {
+            .detail-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .detail-content {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .back-btn, .theme-toggle {
+                position: static;
+                margin-bottom: 1rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-box {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .team-stats {
+                gap: 1rem;
+            }
+
+            .floating-actions {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .fab {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Theme toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">🌙</button>
+
+    <div class="container">
+        <div id="mainPage">
+            <div class="header">
+                <h1>Meet Our Team</h1>
+                <p>Dedicated professionals driving innovation and excellence</p>
+            </div>
+
+            <!-- Interactive controls -->
+            <div class="controls">
+                <input type="text" class="search-box" placeholder="🔍 Search team members..." oninput="searchTeam(this.value)">
+                <button class="filter-btn active" onclick="filterTeam('all')">All</button>
+                <button class="filter-btn" onclick="filterTeam('lead')">Leadership</button>
+                <button class="filter-btn" onclick="filterTeam('engineer')">Engineers</button>
+                <button class="filter-btn" onclick="filterTeam('associate')">Associates</button>
+            </div>
+
+            <!-- Team statistics -->
+            <div class="team-stats">
+                <div class="stat-card" onclick="animateStats()">
+                    <span class="stat-number" id="totalMembers">6</span>
+                    <span class="stat-label">Team Members</span>
+                </div>
+                <div class="stat-card" onclick="animateStats()">
+                    <span class="stat-number" id="totalProjects">6</span>
+                    <span class="stat-label">Total Projects</span>
+                </div>
+                <div class="stat-card" onclick="animateStats()">
+                    <span class="stat-number" id="activeProjects">3</span>
+                    <span class="stat-label">Active Projects</span>
+                </div>
+                <div class="stat-card" onclick="animateStats()">
+                    <span class="stat-number" id="totalExperience">3+</span>
+                    <span class="stat-label">Years Experience</span>
+                </div>
+                <div class="stat-card" onclick="animateStats()">
+                    <span class="stat-number" id="totalSkills">10+</span>
+                    <span class="stat-label">Technologies</span>
+                </div>
+            </div>
+
+            <div class="team-grid" id="teamGrid">
+                <div class="team-card" data-category="lead" data-name="satyam shivhare" onclick="showDetails('satyam')" ondblclick="flipCard(this)">
+                    <div class="card-content">
+                        <div class="avatar">
+                            <img src="images/avatars/satyam.png" alt="Satyam Shivhare" onerror="this.style.display='none'; this.parentNode.innerHTML='SS';">
+                        </div>
+                        <h3>Satyam Shivhare</h3>
+                        <div class="title">Team Lead</div>
+                        <div class="level">Leadership</div>
+                        <div class="quick-info">Senior Software Engineer</div>
+                    </div>
+                </div>
+
+                <div class="team-card" data-category="engineer" data-name="naman jain" onclick="showDetails('naman')" ondblclick="flipCard(this)">
+                    <div class="card-content">
+                        <div class="avatar">
+                            <img src="images/avatars/naman.png" alt="Naman Jain" onerror="this.style.display='none'; this.parentNode.innerHTML='NJ';">
+                        </div>
+                        <h3>Naman Jain</h3>
+                        <div class="title">Information System Engineer</div>
+                        <div class="level">Level 2</div>
+                        <div class="quick-info">Database & System Integration Expert</div>
+                    </div>
+                </div>
+
+                <div class="team-card" data-category="engineer" data-name="isha joshi" onclick="showDetails('isha')" ondblclick="flipCard(this)">
+                    <div class="card-content">
+                        <div class="avatar">
+                            <img src="images/avatars/isha.png" alt="Isha Joshi" onerror="this.style.display='none'; this.parentNode.innerHTML='IJ';">
+                        </div>
+                        <h3>Isha Joshi</h3>
+                        <div class="title">Information System Engineer</div>
+                        <div class="level">Level 1</div>
+                        <div class="quick-info">Frontend & UI/UX Specialist</div>
+                    </div>
+                </div>
+
+                <div class="team-card" data-category="engineer" data-name="yashraj bhargava" onclick="showDetails('yashraj')" ondblclick="flipCard(this)">
+                    <div class="card-content">
+                        <div class="avatar">
+                            <img src="images/avatars/yashraj.png" alt="Yashraj Bhargava" onerror="this.style.display='none'; this.parentNode.innerHTML='YB';">
+                        </div>
+                        <h3>Yashraj Bhargava</h3>
+                        <div class="title">Information System Engineer</div>
+                        <div class="level">Level 1</div>
+                        <div class="quick-info">Backend & System Analysis Expert</div>
+                    </div>
+                </div>
+
+                <div class="team-card" data-category="associate" data-name="samarth sahu" onclick="showDetails('samarth')" ondblclick="flipCard(this)">
+                    <div class="card-content">
+                        <div class="avatar">
+                            <img src="images/avatars/samarth.png" alt="Samarth Sahu" onerror="this.style.display='none'; this.parentNode.innerHTML='SS';">
+                        </div>
+                        <h3>Samarth Sahu</h3>
+                        <div class="title">Associate Software Engineer</div>
+                        <div class="level">Associate</div>
+                        <div class="quick-info">Full-Stack Development Enthusiast</div>
+                    </div>
+                </div>
+
+                <div class="team-card" data-category="associate" data-name="rutuja janbhandhu" onclick="showDetails('rutuja')" ondblclick="flipCard(this)">
+                    <div class="card-content">
+                        <div class="avatar">
+                            <img src="images/avatars/rutuja.png" alt="Rutuja Janbhandhu" onerror="this.style.display='none'; this.parentNode.innerHTML='RJ';">
+                        </div>
+                        <h3>Rutuja Janbhandhu</h3>
+                        <div class="title">Associate Software Engineer</div>
+                        <div class="level">Associate</div>
+                        <div class="quick-info">Frontend & Testing Specialist</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Buttons -->
+        <div class="floating-actions">
+            <button class="fab" onclick="randomTeamMember()" title="Random Team Member">🎲</button>
+            <button class="fab" onclick="showTeamStats()" title="Team Statistics">📊</button>
+            <button class="fab" onclick="exportTeamData()" title="Export Team Data">📤</button>
+        </div>
+
+        <!-- Modal for expanded views -->
+        <div id="modal" class="modal" onclick="closeModal()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <button class="modal-close" onclick="closeModal()">×</button>
+                <div id="modalContent"></div>
+            </div>
+        </div>
+
+        <!-- Detail Pages (keeping original structure) -->
+        <div id="satyam" class="detail-page">
+            <button class="back-btn" onclick="showMain()">← Back to Team</button>
+            <div class="detail-header">
+                <div class="detail-avatar">
+                    <img src="images/avatars/satyam.png" alt="Satyam Shivhare" onerror="this.style.display='none'; this.parentNode.innerHTML='SS';">
+                </div>
+                <div class="detail-info">
+                    <h2>Satyam Shivhare</h2>
+                    <div class="role">Team Lead</div>
+                </div>
+            </div>
+            
+            <div class="detail-content">
+                <div class="info-section">
+                    <h3>Professional Details</h3>
+                    <ul>
+                        <li><strong>Position:</strong> Team Lead</li>
+                        <li><strong>Department:</strong> Information Systems</li>
+                        <li><strong>Experience:</strong> 5+ years</li>
+                        <li><strong>Specialization:</strong> Team Management, System Architecture</li>
+                        <li><strong>Email:</strong> satyam.shivhare@company.com</li>
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h3>Key Responsibilities</h3>
+                    <ul>
+                        <li>Leading cross-functional development teams</li>
+                        <li>Strategic planning and project roadmap</li>
+                        <li>Technical mentoring and guidance</li>
+                        <li>Stakeholder communication</li>
+                        <li>Performance management and team development</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="projects-section">
+                <h3>Current Projects</h3>
+                <div class="project-card" onclick="showProjectModal('Enterprise System Modernization', 'Leading the migration of legacy systems to cloud-native architecture, improving system performance by 40% and reducing operational costs.')">
+                    <h4>Enterprise System Modernization</h4>
+                    <p>Leading the migration of legacy systems to cloud-native architecture, improving system performance by 40% and reducing operational costs.</p>
+                </div>
+                <div class="project-card">
+                    <h4>Team Development Initiative</h4>
+                    <p>Implementing comprehensive training programs and mentorship frameworks to enhance team capabilities and career growth.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="naman" class="detail-page">
+            <button class="back-btn" onclick="showMain()">← Back to Team</button>
+            <div class="detail-header">
+                <div class="detail-avatar">
+                    <img src="images/avatars/naman.jpg" alt="Naman Jain" onerror="this.style.display='none'; this.parentNode.innerHTML='NJ';">
+                </div>
+                <div class="detail-info">
+                    <h2>Naman Jain</h2>
+                    <div class="role">Information System Engineer - Level 2</div>
+                </div>
+            </div>
+            
+            <div class="detail-content">
+                <div class="info-section">
+                    <h3>Professional Details</h3>
+                    <ul>
+                        <li><strong>Position:</strong> Information System Engineer</li>
+                        <li><strong>Level:</strong> Level 2</li>
+                        <li><strong>Experience:</strong> 3+ years</li>
+                        <li><strong>Specialization:</strong> System Integration, Database Management</li>
+                        <li><strong>Email:</strong> naman.jain@company.com</li>
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h3>Technical Skills</h3>
+                    <ul>
+                        <li>Advanced SQL and Database Optimization</li>
+                        <li>System Integration and API Development</li>
+                        <li>Cloud Services (AWS, Azure)</li>
+                        <li>Python and Java Programming</li>
+                        <li>DevOps and CI/CD Pipelines</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="projects-section">
+                <h3>Current Projects</h3>
+                <div class="project-card">
+                    <h4>Database Performance Optimization</h4>
+                    <p>Optimizing critical database queries and implementing indexing strategies, resulting in 60% faster response times.</p>
+                </div>
+                <div class="project-card">
+                    <h4>API Gateway Implementation</h4>
+                    <p>Designing and implementing a centralized API gateway to improve system scalability and security.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="isha" class="detail-page">
+            <button class="back-btn" onclick="showMain()">← Back to Team</button>
+            <div class="detail-header">
+                <div class="detail-avatar">
+                    <img src="images/avatars/isha.jpg" alt="Isha Joshi" onerror="this.style.display='none'; this.parentNode.innerHTML='IJ';">
+                </div>
+                <div class="detail-info">
+                    <h2>Isha Joshi</h2>
+                    <div class="role">Information System Engineer - Level 1</div>
+                </div>
+            </div>
+            
+            <div class="detail-content">
+                <div class="info-section">
+                    <h3>Professional Details</h3>
+                    <ul>
+                        <li><strong>Position:</strong> Information System Engineer</li>
+                        <li><strong>Level:</strong> Level 1</li>
+                        <li><strong>Experience:</strong> 2+ years</li>
+                        <li><strong>Specialization:</strong> Frontend Development, UI/UX</li>
+                        <li><strong>Email:</strong> isha.joshi@company.com</li>
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h3>Technical Skills</h3>
+                    <ul>
+                        <li>React.js and Modern JavaScript</li>
+                        <li>HTML5, CSS3, and Responsive Design</li>
+                        <li>UI/UX Design Principles</li>
+                        <li>Version Control (Git)</li>
+                        <li>Agile Development Methodologies</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="projects-section">
+                <h3>Current Projects</h3>
+                <div class="project-card">
+                    <h4>Customer Portal Redesign</h4>
+                    <p>Leading the frontend development of a new customer portal with improved user experience and mobile responsiveness.</p>
+                </div>
+                <div class="project-card">
+                    <h4>Component Library Development</h4>
+                    <p>Creating a reusable component library to standardize UI elements across all company applications.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="yashraj" class="detail-page">
+            <button class="back-btn" onclick="showMain()">← Back to Team</button>
+            <div class="detail-header">
+                <div class="detail-avatar">
+                    <img src="images/avatars/yashraj.jpg" alt="Yashraj Bhargava" onerror="this.style.display='none'; this.parentNode.innerHTML='YB';">
+                </div>
+                <div class="detail-info">
+                    <h2>Yashraj Bhargava</h2>
+                    <div class="role">Information System Engineer - Level 1</div>
+                </div>
+            </div>
+            
+            <div class="detail-content">
+                <div class="info-section">
+                    <h3>Professional Details</h3>
+                    <ul>
+                        <li><strong>Position:</strong> Information System Engineer</li>
+                        <li><strong>Level:</strong> Level 1</li>
+                        <li><strong>Experience:</strong> 2+ years</li>
+                        <li><strong>Specialization:</strong> Backend Development, System Analysis</li>
+                        <li><strong>Email:</strong> yashraj.bhargava@company.com</li>
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h3>Technical Skills</h3>
+                    <ul>
+                        <li>Java and Spring Framework</li>
+                        <li>RESTful API Development</li>
+                        <li>Database Design and Management</li>
+                        <li>System Analysis and Documentation</li>
+                        <li>Unit Testing and Quality Assurance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="projects-section">
+                <h3>Current Projects</h3>
+                <div class="project-card">
+                    <h4>Microservices Architecture</h4>
+                    <p>Developing and maintaining microservices for the core business application, ensuring scalability and maintainability.</p>
+                </div>
+                <div class="project-card">
+                    <h4>System Integration Testing</h4>
+                    <p>Creating comprehensive test suites for system integration and automated testing pipelines.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="samarth" class="detail-page">
+            <button class="back-btn" onclick="showMain()">← Back to Team</button>
+            <div class="detail-header">
+                <div class="detail-avatar">
+                    <img src="images/avatars/samarth.jpg" alt="Samarth Sahu" onerror="this.style.display='none'; this.parentNode.innerHTML='SS';">
+                </div>
+                <div class="detail-info">
+                    <h2>Samarth Sahu</h2>
+                    <div class="role">Associate Software Engineer</div>
+                </div>
+            </div>
+            
+            <div class="detail-content">
+                <div class="info-section">
+                    <h3>Professional Details</h3>
+                    <ul>
+                        <li><strong>Position:</strong> Associate Software Engineer</li>
+                        <li><strong>Experience:</strong> 1+ years</li>
+                        <li><strong>Specialization:</strong> Full-Stack Development</li>
+                        <li><strong>Education:</strong> B.Tech in Computer Science</li>
+                        <li><strong>Email:</strong> samarth.sahu@company.com</li>
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h3>Technical Skills</h3>
+                    <ul>
+                        <li>JavaScript and Node.js</li>
+                        <li>React.js and Express.js</li>
+                        <li>MongoDB and MySQL</li>
+                        <li>Git and Version Control</li>
+                        <li>Agile Development Practices</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="projects-section">
+                <h3>Current Projects</h3>
+                <div class="project-card">
+                    <h4>Internal Tools Development</h4>
+                    <p>Building internal productivity tools to streamline development workflows and improve team efficiency.</p>
+                </div>
+                <div class="project-card">
+                    <h4>Bug Fixing and Feature Enhancement</h4>
+                    <p>Contributing to bug fixes and implementing small feature enhancements across various applications.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="rutuja" class="detail-page">
+            <button class="back-btn" onclick="showMain()">← Back to Team</button>
+            <div class="detail-header">
+                <div class="detail-avatar">
+                    <img src="images/avatars/rutuja.jpg" alt="Rutuja Janbhandhu" onerror="this.style.display='none'; this.parentNode.innerHTML='RJ';">
+                </div>
+                <div class="detail-info">
+                    <h2>Rutuja Janbhandhu</h2>
+                    <div class="role">Associate Software Engineer</div>
+                </div>
+            </div>
+            
+            <div class="detail-content">
+                <div class="info-section">
+                    <h3>Professional Details</h3>
+                    <ul>
+                        <li><strong>Position:</strong> Associate Software Engineer</li>
+                        <li><strong>Experience:</strong> 1+ years</li>
+                        <li><strong>Specialization:</strong> Frontend Development, Testing</li>
+                        <li><strong>Education:</strong> B.Tech in Information Technology</li>
+                        <li><strong>Email:</strong> rutuja.janbhandhu@company.com</li>
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h3>Technical Skills</h3>
+                    <ul>
+                        <li>HTML, CSS, and JavaScript</li>
+                        <li>React.js and Redux</li>
+                        <li>Automated Testing (Jest, Cypress)</li>
+                        <li>Responsive Web Design</li>
+                        <li>Quality Assurance and Testing</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="projects-section">
+                <h3>Current Projects</h3>
+                <div class="project-card">
+                    <h4>Automated Testing Framework</h4>
+                    <p>Implementing comprehensive automated testing frameworks to ensure application quality and reliability.</p>
+                </div>
+                <div class="project-card">
+                    <h4>User Interface Improvements</h4>
+                    <p>Working on user interface enhancements and accessibility improvements for better user experience.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showDetails(employeeId) {
+            // Hide main page
+            document.getElementById('mainPage').style.display = 'none';
+            
+            // Hide all detail pages
+            const detailPages = document.querySelectorAll('.detail-page');
+            detailPages.forEach(page => page.style.display = 'none');
+            
+            // Show selected employee detail page
+            document.getElementById(employeeId).style.display = 'block';
+            
+            // Smooth scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showMain() {
+            // Hide all detail pages
+            const detailPages = document.querySelectorAll('.detail-page');
+            detailPages.forEach(page => page.style.display = 'none');
+            
+            // Show main page
+            document.getElementById('mainPage').style.display = 'block';
+            
+            // Smooth scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.team-card');
+            
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animation = 'fadeInUp 0.6s ease forwards';
+            });
+        });
+
+        // CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+     <script>
+    /* Theme Toggle */
+    function toggleTheme() {
+      document.body.classList.toggle('dark-theme');
+    }
+
+    /* Show Details Page */
+    function showDetails(id) {
+      document.getElementById("mainPage").style.display = "none";
+      document.querySelectorAll(".detail-page").forEach(el => el.style.display = "none");
+      const detail = document.getElementById(id);
+      if (detail) detail.style.display = "block";
+    }
+
+    /* Back to Main Page */
+    function showMain() {
+      document.querySelectorAll(".detail-page").forEach(el => el.style.display = "none");
+      document.getElementById("mainPage").style.display = "block";
+    }
+
+    /* Flip Card Effect */
+    function flipCard(card) {
+      card.classList.toggle("flip");
+    }
+
+    /* Filter Team Members */
+    function filterTeam(category) {
+      const cards = document.querySelectorAll('.team-card');
+      const buttons = document.querySelectorAll('.filter-btn');
+
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    /* Search Team Members */
+    function searchTeam(query) {
+      const name = query.toLowerCase();
+      document.querySelectorAll(".team-card").forEach(card => {
+        const fullName = card.dataset.name;
+        if (fullName.includes(name)) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+
+    /* Animate Stats */
+    function animateStats() {
+      const stats = document.querySelectorAll(".stat-number");
+      stats.forEach(stat => {
+        let end = parseInt(stat.textContent.replace(/\D/g, ""));
+        if (isNaN(end)) return;
+
+        let start = 0;
+        let duration = 1000;
+        let startTime = null;
+
+        function step(timestamp) {
+          if (!startTime) startTime = timestamp;
+          let progress = Math.min((timestamp - startTime) / duration, 1);
+          stat.textContent = Math.floor(progress * end);
+          if (progress < 1) requestAnimationFrame(step);
+          else stat.textContent = end + (/\+/.test(stat.textContent) ? "+" : "");
+        }
+
+        requestAnimationFrame(step);
+      });
+    }
+
+    /* Random Team Member */
+    function randomTeamMember() {
+      const cards = document.querySelectorAll(".team-card");
+      const random = cards[Math.floor(Math.random() * cards.length)];
+      if (random) random.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      random.classList.add("pulse");
+      setTimeout(() => random.classList.remove("pulse"), 1000);
+    }
+
+    /* Export Team Data (as JSON) */
+    function exportTeamData() {
+      const data = [];
+      document.querySelectorAll(".team-card").forEach(card => {
+        data.push({
+          name: card.querySelector("h3").innerText,
+          title: card.querySelector(".title").innerText,
+          level: card.querySelector(".level").innerText,
+          category: card.dataset.category,
+        });
+      });
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "team-data.json";
+      a.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    /* Modal Viewer for Projects */
+    function showProjectModal(title, description) {
+      document.getElementById("modalContent").innerHTML = `
+        <h2>${title}</h2>
+        <p>${description}</p>
+      `;
+      document.getElementById("modal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+  </script>
+</body>
+</html>
